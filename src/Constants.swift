@@ -9,9 +9,6 @@
 import Foundation
 import SpriteKit
 
-let WIDTH = 450.0
-let HEIGHT = 800.0
-let COLUMNS = 27
-let ROWS = 21
+let EDGE_DISTANCE = 25
 let EDGE_SIZE = 5
 let EDGE_COLOR = SKColor.whiteColor()

@@ -15,23 +15,14 @@ class Transformation {
     }
 }
 
-class GridLayout: Transformation {
+class RubberBands: Transformation {
     
-    var first = true
     
     override func apply(edges: Array<Edge>) {
         
-        var x = 0
-        var y = 0
         for edge in edges {
             
-            if (first) {
-                edge.position = CGPoint(x: WIDTH / 2.0, y: HEIGHT/2.0)
-                continue
-            }
-            
-            
-            let gridPosition = CGPoint(x: (WIDTH/Double(COLUMNS)) * Double(x), y:(HEIGHT/Double(ROWS))*Double(y))
+            let gridPosition = edge.orig
             
             let dx = gridPosition.x - edge.position.x
             let dy = gridPosition.y - edge.position.y
@@ -46,15 +37,7 @@ class GridLayout: Transformation {
             if(d < 2.0 || m > d) {
                 edge.position = gridPosition
             }
-            
-            if x >= COLUMNS {
-                x = 0
-                y += 1
-            } else {
-                x += 1
-            }
         }
-        first = false
     }
 }
 

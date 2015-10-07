@@ -19,19 +19,25 @@ extension Array {
 
 class GameScene: SKScene {
     
-    let grid = GridLayout()
+    let rubber = RubberBands()
     
-    let edges = (0..<(COLUMNS+1)*ROWS).map { _ in Edge() }
+    var edges: [Edge] = []
     
     var pressPoints = Set<UITouch>()
     
     override func didMoveToView(view: SKView) {
         
+        for y in 0.stride(to: Int(size.height), by: EDGE_DISTANCE) {
+            for x in 0.stride(to: Int(size.width), by: EDGE_DISTANCE) {
+                let edge = Edge(orig: CGPoint(x: x, y: y))
+                edge.position = CGPoint(x: size.width / 2.0,y: size.height / 2.0)
+                edges += [edge]
+                self.addChild(edge)
+            }
+        }
+        
         view.multipleTouchEnabled = true
         
-        edges.iter {self.addChild($0)}
-        
-        grid.apply(edges)
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -43,7 +49,7 @@ class GameScene: SKScene {
     }
     
     override func update(currentTime: CFTimeInterval) {
-        grid.apply(edges)
+        rubber.apply(edges)
         
         for touch in pressPoints {
             RepulsionForce(position:touch.locationInNode(self)).apply(edges)

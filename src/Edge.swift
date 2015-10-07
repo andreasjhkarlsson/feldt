@@ -12,7 +12,10 @@ import SpriteKit
 
 class Edge: SKSpriteNode {
     
-    init() {
+    var orig: CGPoint = CGPoint()
+    
+    init(orig: CGPoint) {
+        self.orig = orig
         super.init(texture: nil,color: EDGE_COLOR, size: CGSize(width: EDGE_SIZE, height: EDGE_SIZE))
     }
 
