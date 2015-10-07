@@ -21,6 +21,8 @@ class GameScene: SKScene {
     
     let rubber = RubberBands()
     
+    let color = ColorDistance()
+    
     var edges: [Edge] = []
     
     var pressPoints = Set<UITouch>()
@@ -54,5 +56,8 @@ class GameScene: SKScene {
         for touch in pressPoints {
             RepulsionForce(position:touch.locationInNode(self)).apply(edges)
         }
+        
+        color.apply(edges)
+        
     }
 }
