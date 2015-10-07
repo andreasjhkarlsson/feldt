@@ -23,30 +23,30 @@ class GameScene: SKScene {
     
     let edges = (0..<(COLUMNS+1)*ROWS).map { _ in Edge() }
     
-    var pressPoint: CGPoint? = nil
+    var pressPoints = Set<UITouch>()
     
     override func didMoveToView(view: SKView) {
+        
+        view.multipleTouchEnabled = true
         
         edges.iter {self.addChild($0)}
         
         grid.apply(edges)
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        for touch in touches {
-            pressPoint = touch.locationInNode(self)
-        }
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        pressPoints = pressPoints.union(touches)
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        pressPoint = nil
+        pressPoints = pressPoints.subtract(touches)
     }
     
     override func update(currentTime: CFTimeInterval) {
         grid.apply(edges)
         
-        if let point = pressPoint {
-            RepulsionForce(position:point).apply(edges)
+        for touch in pressPoints {
+            RepulsionForce(position:touch.locationInNode(self)).apply(edges)
         }
     }
 }
