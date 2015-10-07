@@ -9,38 +9,44 @@
 import SpriteKit
 import Darwin
 
-var edges: [Edge] = []
+extension Array {
+    func iter(functor: (Element) -> ()) {
+        for element in self {
+            functor(element)
+        }
+    }
+}
 
 class GameScene: SKScene {
     
     let grid = GridLayout()
     
+    let edges = (0..<(COLUMNS+1)*ROWS).map { _ in Edge() }
+    
+    var pressPoint: CGPoint? = nil
+    
     override func didMoveToView(view: SKView) {
         
-        for _ in 0..<((COLUMNS+1)*(ROWS+1)) {
-            let edge = Edge()
-            self.addChild(edge)
-            edges += [edge]
-        }
+        edges.iter {self.addChild($0)}
         
         grid.apply(edges)
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        
-        grid.apply(edges)
         for touch in touches {
-            let location = touch.locationInNode(self)
-            let transformation = RepulsionForce(position: location)
-            transformation.apply(edges)
+            pressPoint = touch.locationInNode(self)
         }
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        //for edge in edges { edge.resetPosition()}
+        pressPoint = nil
     }
     
     override func update(currentTime: CFTimeInterval) {
-        /* Called before each frame is rendered */
+        grid.apply(edges)
+        
+        if let point = pressPoint {
+            RepulsionForce(position:point).apply(edges)
+        }
     }
 }
