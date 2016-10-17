@@ -10,11 +10,11 @@ import Foundation
 import SpriteKit
 
 class Transformation {
-    func apply (edges: Array<Edge>) {
+    func apply (_ edges: Array<Edge>) {
         preconditionFailure("This method must be overridden")
     }
     
-    func distance(p1: CGPoint, p2: CGPoint) -> CGFloat {
+    func distance(_ p1: CGPoint, p2: CGPoint) -> CGFloat {
         let dx = p1.x - p2.x
         let dy = p1.y - p2.y
         return sqrt(dx*dx + dy*dy)
@@ -25,7 +25,7 @@ class Transformation {
 class RubberBands: Transformation {
     
     
-    override func apply(edges: Array<Edge>) {
+    override func apply(_ edges: Array<Edge>) {
         
         for edge in edges {
             
@@ -52,7 +52,7 @@ class RepulsionForce: Transformation {
         self.position = position
     }
     
-    override func apply(edges: Array<Edge>) {
+    override func apply(_ edges: Array<Edge>) {
         
         for edge in edges {
             let d = sqrt(distance(position,p2: edge.position))
@@ -70,7 +70,7 @@ class RepulsionForce: Transformation {
 
 class ColorDistance: Transformation {
     
-    override func apply(edges: Array<Edge>) {
+    override func apply(_ edges: Array<Edge>) {
         
         for edge in edges {
             let d = distance(edge.position,p2: edge.orig)

@@ -11,4 +11,4 @@ import SpriteKit
 
 let EDGE_DISTANCE = 25
 let EDGE_SIZE = 5
-let EDGE_COLOR = SKColor.whiteColor()
+let EDGE_COLOR = SKColor.white
